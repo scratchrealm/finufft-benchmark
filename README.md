@@ -10,9 +10,13 @@ This project uses [kachery-cloud](https://github.com/scratchrealm/kachery-cloud)
 
 ## Installation and setup
 
+Should work on both Linux and Mac OS.
+
 It is recommended that you use a conda environment with Python >= 3.8 and numpy.
 
-[Install FINUFFT](https://finufft.readthedocs.io/en/latest/install.html) in this environment with Python support.
+Step 1: [Install FINUFFT](https://finufft.readthedocs.io/en/latest/install.html) in this environment with Python support.
+
+Step 2: Install finufft-benchmark
 
 ```bash
 # clone this repo
@@ -23,7 +27,7 @@ cd finufft-benchmark
 pip install -e .
 ```
 
-Configure your [kachery-cloud](https://github.com/scratchrealm/kachery-cloud) client (only do this once on your computer)
+Step 3: Configure your [kachery-cloud](https://github.com/scratchrealm/kachery-cloud) client (only do this once on your computer)
 
 ```bash
 kachery-cloud-init
@@ -31,6 +35,8 @@ kachery-cloud-init
 ```
 
 ## Basic usage
+
+From a terminal
 
 ```bash
 finufft-benchmark run
