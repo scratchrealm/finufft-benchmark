@@ -4,6 +4,8 @@ Run a [FINUFFT](https://finufft.readthedocs.io/en/latest/) benchmarking script a
 
 [See this example report](https://figurl.org/f?v=gs://figurl/figurl-report&d=ipfs://bafkreicybk7hhraqemizo7msk6qgvqdwsetq4e4wj67dswkopjjji4ddke&label=FINUFFT%20benchmark)
 
+The idea is to provide an easy means of benchmarking the FINUFFT library on any computer and generating a report in the form of a figurl link, suitable for sharing and archiving.
+
 This project uses [kachery-cloud](https://github.com/scratchrealm/kachery-cloud) and [figurl](https://github.com/scratchrealm/figurl2).
 
 > **IMPORTANT**: Figurl and kachery-cloud are intended for collaborative sharing of data for scientific research. They should not be used for other purposes.
