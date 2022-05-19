@@ -1,0 +1,8 @@
+projectName: finufft_benchmark
+pythonProjectVersion: 0.1.1
+projectAuthor: Jeremy Magland
+projectAuthorEmail: jmagland@flatironinstitute.org
+projectDescription:
+projectUrl:
+projectBugTrackerUrl:
+pythonPackageDir: .
