@@ -47,3 +47,7 @@ finufft-benchmark run
 # Example output:
 # https://figurl.org/f?v=gs://figurl/figurl-report&d=ipfs://bafkreicybk7hhraqemizo7msk6qgvqdwsetq4e4wj67dswkopjjji4ddke&label=FINUFFT%20benchmark
 ```
+
+## Further information
+
+If you want to create your own benchmarking script, you can adapt it from [this one](https://github.com/scratchrealm/finufft-benchmark/blob/main/finufft_benchmark/run_benchmark.py).

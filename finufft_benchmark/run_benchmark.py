@@ -3,8 +3,8 @@ import platform
 import psutil
 from datetime import datetime
 import figurl as fig
-from .BenchmarkJob import BenchmarkJob
-from .BenchmarkJobGroup import BenchmarkJobGroup
+from finufft_benchmark.BenchmarkJob import BenchmarkJob
+from finufft_benchmark.BenchmarkJobGroup import BenchmarkJobGroup
 
 
 def run_benchmark():
