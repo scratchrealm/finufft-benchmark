@@ -48,7 +48,6 @@ def run_benchmark(config: dict):
             raise Exception(f'Unexpected plot type: {plot_type}')
         nreps = config_group['nreps']
 
-        print(num_nonuniform_points)
         if plot_type == 'varying-nonuniform-points':
             jobs = [
                 BenchmarkJob(
