@@ -4,7 +4,7 @@
 
 Run a [FINUFFT](https://finufft.readthedocs.io/en/latest/) benchmarking script and generate a shareable [figurl](https://github.com/scratchrealm/figurl2) report.
 
-[See this example report](https://figurl.org/f?v=gs://figurl/figurl-report&d=ipfs://bafkreicmldxbfa2nvbujjojzwtxwbei6ydkqg6khnoxigerqjadqklvvue&label=FINUFFT%20benchmark)
+[See this example report](https://figurl.org/f?v=gs://figurl/figurl-report&d=ipfs://bafkreifm475gnvhw3uv4hhdkojr7rupfysnkdvdntcuaowmgsztnx3h5ze&label=FINUFFT%20benchmark)
 
 The idea is to provide an easy means of benchmarking the FINUFFT library on any computer and generating a report in the form of a figurl link, suitable for sharing and archiving.
 
@@ -47,10 +47,10 @@ finufft-benchmark run
 
 # This will print a shareable URL link to the report
 # Example output:
-# https://figurl.org/f?v=gs://figurl/figurl-report&d=ipfs://bafkreicmldxbfa2nvbujjojzwtxwbei6ydkqg6khnoxigerqjadqklvvue&label=FINUFFT%20benchmark
+# https://figurl.org/f?v=gs://figurl/figurl-report&d=ipfs://bafkreifm475gnvhw3uv4hhdkojr7rupfysnkdvdntcuaowmgsztnx3h5ze&label=FINUFFT%20benchmark
 ```
 
-## Custom benchmarking
+## Customizing the benchmarking script
 
 To customize the benchmarking with your own parameters, you can pass in a configuration file:
 
@@ -67,3 +67,17 @@ finufft-benchmark create-config
 ```
 
 Here is an [example config file](./finufft_benchmark/default_config.yml).
+
+Jobs are organized into groups of the following plot types
+* varying-uniform-points
+* varying-nonuniform-points
+* varying-nthreads
+
+The following parameters can be controlled
+* transform_type: 1 or 2 (3 not supported yet)
+* plot_type: see above
+* epsilon: e.g, 1.e-6
+* num_uniform_points: number of uniform points (or list if plot type is varying-uniform-points)
+* num_nonuniform_points: number of nonuniform points (or list if plot type is varying-nonuniform-points)
+* nreps: number of repetitions per data point
+* nthreads: number of threads (or list if plot type is varying-nthreads)
