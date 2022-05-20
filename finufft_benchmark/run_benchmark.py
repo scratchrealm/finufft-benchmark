@@ -13,6 +13,9 @@ def run_benchmark(config: dict):
     report = fig.Report()
     report.add_markdown(unindent('''
     # FINUFFT benchmark
+
+    To run this on your own machine, see [finufft-benchmark](https://github.com/scratchrealm/finufft-benchmark).
+
     '''))
     report.add_markdown(get_system_markdown())
 
