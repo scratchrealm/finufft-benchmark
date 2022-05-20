@@ -1,3 +1,4 @@
+from typing import List
 import altair
 import platform
 import psutil
@@ -7,41 +8,71 @@ from finufft_benchmark.BenchmarkJob import BenchmarkJob
 from finufft_benchmark.BenchmarkJobGroup import BenchmarkJobGroup
 
 
-def run_benchmark():
+def run_benchmark(config: dict):
+    config_groups = config['groups']
     report = fig.Report()
     report.add_markdown(unindent('''
     # FINUFFT benchmark
     '''))
     report.add_markdown(get_system_markdown())
 
-    for transform_type in [1, 2]:
-        for nthreads in [1, 4]:
-            #######################################################################
-            num_uniform_points = 1e6
-            num_reps = 4
-            eps = 1e-4
-            group = BenchmarkJobGroup(
-                label = f'Type {transform_type} 3D FINUFFT with varying #n.u. points; #u.={sci(num_uniform_points)}, eps={sci(eps)}, nthreads={nthreads}',
-                jobs = [
-                    BenchmarkJob(
-                        label=f'#n.u.={sci(num_nonuniform_points)}',
-                        transform_type=transform_type,
-                        num_uniform_points=num_uniform_points,
-                        num_nonuniform_points=num_nonuniform_points,
-                        eps=eps,
-                        num_reps=num_reps,
-                        nthreads=nthreads
-                    )
-                    for num_nonuniform_points in [1e4, 1e5, 1e6, 2e6, 5e6, 8e6, 1e7]
-                ]
-            )
-            group.run()
+    for config_group in config_groups:
+        label: str = config_group['label']
+        transform_type: int = config_group['transform_type']
+        plot_type: str = config_group['plot_type']
+        epsilon: float = config_group['epsilon']
+        if plot_type == 'varying-nonuniform-points':
+            num_uniform_points: float = config_group['num_uniform_points']
+            num_nonuniform_points: List[float] = config_group['num_nonuniform_points']
+        elif plot_type == 'varying-uniform-points':
+            num_nonuniform_points: float = config_group['num_nonuniform_points']
+            num_uniform_points: List[float] = config_group['num_uniform_points']
+        else:
+            raise Exception(f'Unexpected plot type: {plot_type}')
+        nthreads = config_group['nthreads']
+        nreps = config_group['nreps']
+
+        print(num_nonuniform_points)
+        if plot_type == 'varying-nonuniform-points':
+            jobs = [
+                BenchmarkJob(
+                    label=f'#n.u.={sci(num)}',
+                    transform_type=transform_type,
+                    num_uniform_points=num_uniform_points,
+                    num_nonuniform_points=num,
+                    eps=epsilon,
+                    num_reps=nreps,
+                    nthreads=nthreads
+                )
+                for num in num_nonuniform_points
+            ]
+        elif plot_type == 'varying-uniform-points':
+            jobs = [
+                BenchmarkJob(
+                    label=f'#u.={sci(num)}',
+                    transform_type=transform_type,
+                    num_uniform_points=num,
+                    num_nonuniform_points=num_nonuniform_points,
+                    eps=epsilon,
+                    num_reps=nreps,
+                    nthreads=nthreads
+                )
+                for num in num_uniform_points
+            ]
+        else:
+            raise Exception(f'Unexpected plot type: {plot_type}')
+        group = BenchmarkJobGroup(
+            label=label,
+            jobs=jobs
+        )
+        group.run()
+        if plot_type == 'varying-nonuniform-points':
             report.add_markdown(unindent(f'''
-                ## Type {transform_type} 3D FINUFFT - varying num. nonuniform points - {nthreads} thread(s)
+                ## {group.label}
 
                 * Num. uniform points: `{sci(num_uniform_points)}`
-                * Num. repetitions: `{num_reps}`
-                * Epsilon: `{sci(eps)}`
+                * Num. repetitions: `{nreps}`
+                * Epsilon: `{sci(epsilon)}`
                 * Num. threads: `{nthreads}`
             '''))
             layout = report.add_hboxlayout()
@@ -51,33 +82,13 @@ def run_benchmark():
             layout.add_altair_chart(
                 create_chart1(group, point_type='nonuniform', pps=True)
             )
-
-            #######################################################################
-            num_nonuniform_points = 1e6
-            num_reps = 4
-            eps = 1e-4
-            group = BenchmarkJobGroup(
-                label = f'Type {transform_type} 3D FINUFFT with varying #u. points; #n.u.={sci(num_nonuniform_points)}, eps={sci(eps)}, nthreads={nthreads}',
-                jobs = [
-                    BenchmarkJob(
-                        label=f'#u.={sci(num_uniform_points)}',
-                        transform_type=transform_type,
-                        num_uniform_points=num_uniform_points,
-                        num_nonuniform_points=num_nonuniform_points,
-                        eps=eps,
-                        num_reps=num_reps,
-                        nthreads=nthreads
-                    )
-                    for num_uniform_points in [1e4, 1e5, 1e6, 2e6, 5e6, 8e6, 1e7]
-                ]
-            )
-            group.run()
+        elif plot_type == 'varying-uniform-points':
             report.add_markdown(unindent(f'''
-                ## Type {transform_type} 3D FINUFFT - varying num. uniform points - {nthreads} thread(s)
+                ## {group.label}
 
                 * Num. nonuniform points: `{sci(num_nonuniform_points)}`
-                * Num. repetitions: `{num_reps}`
-                * Epsilon: `{sci(eps)}`
+                * Num. repetitions: `{nreps}`
+                * Epsilon: `{sci(epsilon)}`
                 * Num. threads: `{nthreads}`
             '''))
             layout = report.add_hboxlayout()
@@ -87,10 +98,11 @@ def run_benchmark():
             layout.add_altair_chart(
                 create_chart1(group, point_type='uniform', pps=True)
             )
+        else:
+            raise Exception(f'Unexpected plot type: {plot_type}')
 
     url = report.url(label='FINUFFT benchmark')
     print(url)
-    # https://figurl.org/f?v=http://localhost:3000&d=ipfs://bafkreig7yr3ahtnscvm6kdbf2hxizkq54d6rkyti62dhywszn6yy3mryo4&label=FINUFFT%20benchmark
 
     return url
 

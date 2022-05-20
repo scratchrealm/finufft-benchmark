@@ -4,7 +4,7 @@
 
 Run a [FINUFFT](https://finufft.readthedocs.io/en/latest/) benchmarking script and generate a shareable [figurl](https://github.com/scratchrealm/figurl2) report.
 
-[See this example report](https://figurl.org/f?v=gs://figurl/figurl-report&d=ipfs://bafkreicybk7hhraqemizo7msk6qgvqdwsetq4e4wj67dswkopjjji4ddke&label=FINUFFT%20benchmark)
+[See this example report](https://www.figurl.org/f?v=gs://figurl/figurl-report&d=ipfs://bafkreihia4vmoqchkbip7ezzfzwpumh3vji4mmpt2i5ltwqap5xvpjx4xe&label=FINUFFT%20benchmark)
 
 The idea is to provide an easy means of benchmarking the FINUFFT library on any computer and generating a report in the form of a figurl link, suitable for sharing and archiving.
 
@@ -47,9 +47,23 @@ finufft-benchmark run
 
 # This will print a shareable URL link to the report
 # Example output:
-# https://figurl.org/f?v=gs://figurl/figurl-report&d=ipfs://bafkreicybk7hhraqemizo7msk6qgvqdwsetq4e4wj67dswkopjjji4ddke&label=FINUFFT%20benchmark
+# https://www.figurl.org/f?v=gs://figurl/figurl-report&d=ipfs://bafkreihia4vmoqchkbip7ezzfzwpumh3vji4mmpt2i5ltwqap5xvpjx4xe&label=FINUFFT%20benchmark
 ```
 
-## Further information
+## Custom benchmarking
 
-If you want to create your own benchmarking script, you can adapt it from [this one](https://github.com/scratchrealm/finufft-benchmark/blob/main/finufft_benchmark/run_benchmark.py).
+To customize the benchmarking with your own parameters, you can pass in a configuration file:
+
+```bash
+finufft-benchmark run --config config.yml
+```
+
+To generate a template config file:
+```bash
+finufft-benchmark create-config
+
+# This will create a config.yml file in your working directory
+# Edit this file as needed
+```
+
+Here is an [example config file](./finufft_benchmark/default_config.yml).

@@ -8,6 +8,7 @@ setup(
     include_package_data = True,
     install_requires=[
         'click',
+        'pyyaml',
         'kachery-cloud>=0.1.13',
         'figurl>=0.2.3'
     ]

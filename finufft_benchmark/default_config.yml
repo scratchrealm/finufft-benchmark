@@ -1,0 +1,37 @@
+groups:
+  -
+    label: Type 1 3D FINUFFT with varying n.u. points - 4 threads - eps=1e-6
+    transform_type: 1
+    plot_type: varying-nonuniform-points
+    epsilon: 1.e-6
+    num_uniform_points: 1.e+6
+    num_nonuniform_points: [1.e+4, 2.e+4, 5.e+4, 8.e+4, 1.e+5, 2.e+5, 5.e+5, 8.e+5, 1.e+6, 5.e+6, 1.e+7, 5.e+7, 1.e+8]
+    nreps: 4
+    nthreads: 4
+  -
+    label: Type 1 3D FINUFFT with varying u. points - 4 threads - eps=1e-6
+    transform_type: 1
+    plot_type: varying-uniform-points
+    epsilon: 1.e-6
+    num_nonuniform_points: 1.e+6
+    num_uniform_points: [1.e+4, 2.e+4, 5.e+4, 8.e+4, 1.e+5, 2.e+5, 5.e+5, 8.e+5, 1.e+6, 5.e+6, 1.e+7, 5.e+7, 1.e+8]
+    nreps: 4
+    nthreads: 4
+  -
+    label: Type 2 3D FINUFFT with varying n.u. points - 4 threads - eps=1e-6
+    transform_type: 2
+    plot_type: varying-nonuniform-points
+    epsilon: 1.e-6
+    num_uniform_points: 1.e+6
+    num_nonuniform_points: [1.e+4, 2.e+4, 5.e+4, 8.e+4, 1.e+5, 2.e+5, 5.e+5, 8.e+5, 1.e+6, 5.e+6, 1.e+7, 5.e+7, 1.e+8]
+    nreps: 4
+    nthreads: 4
+  -
+    label: Type 2 3D FINUFFT with varying u. points - 4 threads - eps=1e-6
+    transform_type: 2
+    plot_type: varying-uniform-points
+    epsilon: 1.e-6
+    num_nonuniform_points: 1.e+6
+    num_uniform_points: [1.e+4, 2.e+4, 5.e+4, 8.e+4, 1.e+5, 2.e+5, 5.e+5, 8.e+5, 1.e+6, 5.e+6, 1.e+7, 5.e+7, 1.e+8]
+    nreps: 4
+    nthreads: 4

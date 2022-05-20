@@ -1,4 +1,4 @@
-*.spikesortingview.h5
+config.yml
 dist
 tmp
 devel/start-backend
