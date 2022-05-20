@@ -16,6 +16,14 @@ def run_benchmark(config: dict):
     '''))
     report.add_markdown(get_system_markdown())
 
+    # Can't get table of contents working right now
+    # because anchor links don't work inside Markdown react component
+    # contents_md = '---\n'
+    # for config_group in config_groups:
+    #     label = config_group['label']
+    #     contents_md = contents_md + f'* [{label}](#{"-".join(label.split(" "))})\n'
+    # report.add_markdown(contents_md)
+
     for config_group in config_groups:
         label: str = config_group['label']
         transform_type: int = config_group['transform_type']
@@ -24,12 +32,17 @@ def run_benchmark(config: dict):
         if plot_type == 'varying-nonuniform-points':
             num_uniform_points: float = config_group['num_uniform_points']
             num_nonuniform_points: List[float] = config_group['num_nonuniform_points']
+            nthreads = config_group['nthreads']
         elif plot_type == 'varying-uniform-points':
             num_nonuniform_points: float = config_group['num_nonuniform_points']
             num_uniform_points: List[float] = config_group['num_uniform_points']
+            nthreads = config_group['nthreads']
+        elif plot_type == 'varying-nthreads':
+            num_nonuniform_points: float = config_group['num_nonuniform_points']
+            num_uniform_points: float = config_group['num_uniform_points']
+            nthreads: List[float] = config_group['nthreads']
         else:
             raise Exception(f'Unexpected plot type: {plot_type}')
-        nthreads = config_group['nthreads']
         nreps = config_group['nreps']
 
         print(num_nonuniform_points)
@@ -59,6 +72,19 @@ def run_benchmark(config: dict):
                 )
                 for num in num_uniform_points
             ]
+        elif plot_type == 'varying-nthreads':
+            jobs = [
+                BenchmarkJob(
+                    label=f'#threads={num}',
+                    transform_type=transform_type,
+                    num_uniform_points=num_uniform_points,
+                    num_nonuniform_points=num_nonuniform_points,
+                    eps=epsilon,
+                    num_reps=nreps,
+                    nthreads=num
+                )
+                for num in nthreads
+            ]
         else:
             raise Exception(f'Unexpected plot type: {plot_type}')
         group = BenchmarkJobGroup(
@@ -70,36 +96,41 @@ def run_benchmark(config: dict):
             report.add_markdown(unindent(f'''
                 ## {group.label}
 
+                * Transform type: `{transform_type}`
                 * Num. uniform points: `{sci(num_uniform_points)}`
                 * Num. repetitions: `{nreps}`
                 * Epsilon: `{sci(epsilon)}`
                 * Num. threads: `{nthreads}`
             '''))
-            layout = report.add_hboxlayout()
-            layout.add_altair_chart(
-                create_chart1(group, point_type='nonuniform', pps=False)
-            )
-            layout.add_altair_chart(
-                create_chart1(group, point_type='nonuniform', pps=True)
-            )
         elif plot_type == 'varying-uniform-points':
             report.add_markdown(unindent(f'''
                 ## {group.label}
 
+                * Transform type: `{transform_type}`
                 * Num. nonuniform points: `{sci(num_nonuniform_points)}`
                 * Num. repetitions: `{nreps}`
                 * Epsilon: `{sci(epsilon)}`
                 * Num. threads: `{nthreads}`
             '''))
-            layout = report.add_hboxlayout()
-            layout.add_altair_chart(
-                create_chart1(group, point_type='uniform', pps=False)
-            )
-            layout.add_altair_chart(
-                create_chart1(group, point_type='uniform', pps=True)
-            )
+        elif plot_type == 'varying-nthreads':
+            report.add_markdown(unindent(f'''
+                ## {group.label}
+
+                * Transform type: `{transform_type}`
+                * Num. uniform points: `{sci(num_uniform_points)}`
+                * Num. nonuniform points: `{sci(num_nonuniform_points)}`
+                * Num. repetitions: `{nreps}`
+                * Epsilon: `{sci(epsilon)}`
+            '''))
         else:
             raise Exception(f'Unexpected plot type: {plot_type}')
+        layout = report.add_hboxlayout()
+        layout.add_altair_chart(
+            create_chart1(group, plot_type=plot_type, pps=False)
+        )
+        layout.add_altair_chart(
+            create_chart1(group, plot_type=plot_type, pps=True)
+        )
 
     url = report.url(label='FINUFFT benchmark')
     print(url)
@@ -171,30 +202,48 @@ def get_system_markdown():
 
     ''')
 
-def create_chart1(group: BenchmarkJobGroup, *, point_type: str, pps: bool):
+def create_chart1(group: BenchmarkJobGroup, *, plot_type: str, pps: bool):
     data = []
-    key = 'num_nonuniform_points' if point_type == 'nonuniform' else 'num_uniform_points'
+    if plot_type == 'varying-nonuniform-points':
+        num_points_key = 'num_nonuniform_points'
+        key = 'num_nonuniform_points'
+    elif plot_type == 'varying-uniform-points':
+        num_points_key = 'num_uniform_points'
+        key = 'num_uniform_points'
+    elif plot_type == 'varying-nthreads':
+        num_points_key = 'num_nonuniform_points'
+        key = 'nthreads'
+    else:
+        raise Exception(f'Unexpected plot type: {plot_type}')
     for job in group._jobs:
         results = job.results
         for result in results:
-            num_points = job.args[key]
+            num_points = job.args[num_points_key]
             value = result['elapsed'] if not pps else num_points / result['elapsed']
             data.append({
-                'num_points': job.args[key],
+                'num': job.args[key],
                 'value': value
             })
-    title = f'Elapsed time vs num. {point_type} points' if not pps else f'Points per second vs num. {point_type} points'
+    if plot_type == 'varying-nonuniform-points':
+        q = 'num. nonuniform pts'
+    elif plot_type == 'varying-uniform-points':
+        q = 'num. uniform pts'
+    elif plot_type == 'varying-nthreads':
+        q = 'nthreads'
+    else:
+        raise Exception(f'Unexpected plot type: {plot_type}')
+    title = f'Elapsed time vs {q}' if not pps else f'Pts per second vs {q}'
     return altair.Chart(
         data=altair.Data(values=data)
     ).mark_circle().encode(
         x=altair.X(
-            'num_points:Q',
-            scale=altair.Scale(type="log"),
-            title=f'Num. {point_type} points'
+            'num:Q',
+            scale=altair.Scale(type="log") if plot_type != 'varying-nthreads' else altair.Scale(),
+            title=f'{q}'
         ),
         y=altair.Y(
             'value:Q',
-            scale=altair.Scale(type="log"),
+            scale=altair.Scale(type="log") if plot_type != 'varying-nthreads' else altair.Scale(),
             title='Elapsed time (sec)' if not pps else 'Points per second'
         )
     ).properties(

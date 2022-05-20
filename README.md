@@ -4,7 +4,7 @@
 
 Run a [FINUFFT](https://finufft.readthedocs.io/en/latest/) benchmarking script and generate a shareable [figurl](https://github.com/scratchrealm/figurl2) report.
 
-[See this example report](https://www.figurl.org/f?v=gs://figurl/figurl-report&d=ipfs://bafkreihia4vmoqchkbip7ezzfzwpumh3vji4mmpt2i5ltwqap5xvpjx4xe&label=FINUFFT%20benchmark)
+[See this example report](https://figurl.org/f?v=gs://figurl/figurl-report&d=ipfs://bafkreicmldxbfa2nvbujjojzwtxwbei6ydkqg6khnoxigerqjadqklvvue&label=FINUFFT%20benchmark)
 
 The idea is to provide an easy means of benchmarking the FINUFFT library on any computer and generating a report in the form of a figurl link, suitable for sharing and archiving.
 
@@ -47,7 +47,7 @@ finufft-benchmark run
 
 # This will print a shareable URL link to the report
 # Example output:
-# https://www.figurl.org/f?v=gs://figurl/figurl-report&d=ipfs://bafkreihia4vmoqchkbip7ezzfzwpumh3vji4mmpt2i5ltwqap5xvpjx4xe&label=FINUFFT%20benchmark
+# https://figurl.org/f?v=gs://figurl/figurl-report&d=ipfs://bafkreicmldxbfa2nvbujjojzwtxwbei6ydkqg6khnoxigerqjadqklvvue&label=FINUFFT%20benchmark
 ```
 
 ## Custom benchmarking

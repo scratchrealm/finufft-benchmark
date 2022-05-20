@@ -13,7 +13,7 @@ class BenchmarkJobGroup:
         return self._label
     def run(self):
         print('********************************************************')
-        print(f'Job group {self._label}')
+        print(f'{self._label}')
         for jj, job in enumerate(self.jobs):
             print(f'Job {jj + 1} of {len(self.jobs)}: {job.label}')
             job.run()

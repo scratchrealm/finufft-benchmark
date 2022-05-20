@@ -35,3 +35,12 @@ groups:
     num_uniform_points: [1.e+4, 2.e+4, 5.e+4, 8.e+4, 1.e+5, 2.e+5, 5.e+5, 8.e+5, 1.e+6, 5.e+6, 1.e+7, 5.e+7, 1.e+8]
     nreps: 4
     nthreads: 4
+  -
+    label: Type 1 3D FINUFFT with varying nthreads
+    transform_type: 1
+    plot_type: varying-nthreads
+    epsilon: 1.e-6
+    num_uniform_points: 1.e+7
+    num_nonuniform_points: 1.e+7
+    nreps: 4
+    nthreads: [1, 2, 4, 8, 16]
