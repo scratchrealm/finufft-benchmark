@@ -2,17 +2,7 @@
 
 > :warning: Under construction
 
-Run a [FINUFFT](https://finufft.readthedocs.io/en/latest/) benchmarking script and generate a shareable [figurl](https://github.com/scratchrealm/figurl2) report.
-
-Example reports:
-* [Report 1 (Laptop)](https://figurl.org/f?v=gs://figurl/figurl-report&d=ipfs://bafkreicjsyiqyg5wy6e5cddf2tufxtzbegmitwsj4v3fkqtilzz4slojhe&label=FINUFFT%20benchmark)
-* [Report 2 (Workstation)](https://figurl.org/f?v=gs://figurl/figurl-report&d=ipfs://bafkreih5qoi7f5kgzq7y25pqaqi4w6rzykzy7iwy4sfxje43ft36hcnezy&label=FINUFFT%20benchmark)
-
-The idea is to provide an easy means of benchmarking the FINUFFT library on any computer and generating a report in the form of a figurl link, suitable for sharing and archiving.
-
-This project uses [kachery-cloud](https://github.com/scratchrealm/kachery-cloud) and [figurl](https://github.com/scratchrealm/figurl2).
-
-> **IMPORTANT**: Figurl and kachery-cloud are intended for collaborative sharing of data for scientific research. They should not be used for other purposes.
+Run a [FINUFFT](https://finufft.readthedocs.io/en/latest/) benchmarking script and produce an output .json file with the results.
 
 ## Installation and setup
 
@@ -33,23 +23,12 @@ cd finufft-benchmark
 pip install -e .
 ```
 
-Step 3: Configure your [kachery-cloud](https://github.com/scratchrealm/kachery-cloud) client (only do this once on your computer)
-
-```bash
-kachery-cloud-init
-# follow the instructions to associate your client with your Google user name on kachery-cloud
-```
-
 ## Basic usage
 
 From a terminal
 
 ```bash
 finufft-benchmark run
-
-# This will print a shareable URL link to the report
-# Example output:
-# https://figurl.org/f?v=gs://figurl/figurl-report&d=ipfs://bafkreicjsyiqyg5wy6e5cddf2tufxtzbegmitwsj4v3fkqtilzz4slojhe&label=FINUFFT%20benchmark
 ```
 
 ## Customizing the benchmarking script

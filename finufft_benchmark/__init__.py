@@ -1,4 +1,3 @@
-from .BenchmarkJob import BenchmarkJob
-from .BenchmarkJobGroup import BenchmarkJobGroup
-from .FinufftBenchmark import FinufftBenchmark
-from .run_benchmark import run_benchmark
+from .BenchmarkJob import BenchmarkJob  # noqa: F401
+from .BenchmarkJobGroup import BenchmarkJobGroup  # noqa: F401
+from .run_benchmark import run_benchmark  # noqa: F401
